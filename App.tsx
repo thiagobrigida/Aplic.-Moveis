@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-const faces: ImageSourcePropType[] = 
+const faces: ImageSourcePropType[] =
   [require("./assets/lado1.png"),
   require("./assets/lado2.png"),
   require("./assets/lado3.png"),
@@ -13,24 +13,28 @@ const faces: ImageSourcePropType[] =
 
 export default function App() {
   const [num, setNum] = useState(0);
-  let ultimo:number = -1;
-  function Sortear(){
-    if(ultimo == -1 || ultimo == num){
-      setNum(Math.floor(Math.random() * 6));
-      ultimo = num;
-    }else{
-      Sortear();
-    }
-    return num;
+  const [ultimo, setUltimo] = useState(-1);
+
+  function Sortear() {
+    let novoNum:number;
+
+    do {
+      novoNum = Math.floor(Math.random() * 6);
+    } while (novoNum == ultimo);
+
+    setNum(novoNum);
+    setUltimo(novoNum);
+    return novoNum;
   }
 
   return (
-    <View style={styles.container}>
+    <View style={(num + 1) <= 3 ? styles.corLeve : styles.corForte }>
       <Text>Teste sua sorte!</Text>
       <TouchableOpacity onPress={Sortear}>
         <Image source={faces[num]}></Image>
       </TouchableOpacity>
-      
+      <Text>Número sorteado: {num + 1}</Text>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -39,8 +43,22 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgb(255, 255, 255)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
+  corForte: {
+    flex: 1,
+    color: '#fff',
+    backgroundColor: 'rgb(0, 238, 255)',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  corLeve: {
+    flex: 1,
+    color: '#fff',
+    backgroundColor: 'rgb(203, 243, 255)',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  }
 });
