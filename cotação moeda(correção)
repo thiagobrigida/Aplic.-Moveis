@@ -1,0 +1,30 @@
+export default function App() {
+  const [dolar, setDolar] = useState("");
+  const [taxa, setTaxa] = useState("");
+  const [resultado, setResultado] = useState(null);
+
+  const logo = require('./assets/moeda.jpg');
+
+  function converter() {
+    const d = parseFloat(dolar);
+    const t = parseFloat(taxa);
+    if (isNaN(d) || isNaN(t)) {
+      Alert.alert("Erro", "Digite valores válidos!");
+      return;
+    }
+    setResultado(d * t);
+  }
+
+  return (
+    <View style={styles.container}>
+      <Image source={logo} style={{width: 30, height: 30}} />
+      <Text>Conversor de Moedas</Text>
+      <TextInput placeholder="Dólar" keyboardType="numeric" onChangeText={setDolar} />
+      <TextInput placeholder="Taxa" keyboardType="numeric" onChangeText={setTaxa} />
+      <Button onPress={converter} title='Converter' />
+      {resultado !== null && (
+        <Text>Valor Convertido: {resultado}</Text>
+      )}
+    </View>
+  );
+}
